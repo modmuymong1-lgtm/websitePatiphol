@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Big Patrol กฟฉ.2 ประจำปี 2569</title>
+<style>
+  :root{
+    --purple-900:#2E1A54;
+    --purple-800:#3E2069;
+    --purple-700:#4B2E83;
+    --purple-500:#7C5CBF;
+    --purple-100:#EFE9FA;
+    --gold:#E8A33D;
+    --green:#1E9E6B;
+    --green-bg:#E5F7EF;
+    --red:#D64545;
+    --red-bg:#FCEAEA;
+    --blue:#2F80C4;
+    --blue-bg:#E9F3FB;
+    --ink:#241D34;
+    --muted:#736A85;
+    --bg:#F5F3FA;
+    --card:#FFFFFF;
+    --border:#E4DFF1;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Sarabun','Segoe UI','Tahoma',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+  }
+  .header{
+    background:linear-gradient(120deg,var(--purple-900) 0%,var(--purple-700) 55%,var(--purple-500) 100%);
+    color:#fff;
+    padding:28px 40px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .header::after{
+    content:"";
+    position:absolute;
+    right:-60px; top:-80px;
+    width:260px; height:260px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(232,163,61,0.35) 0%, rgba(232,163,61,0) 70%);
+  }
+  .eyebrow{
+    font-family:'Kanit','Segoe UI',sans-serif;
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Kanit','Segoe UI',sans-serif;
+    font-size:26px;
+    font-weight:700;
+    margin:0 0 4px;
+    line-height:1.35;
+  }
+  .subtitle{
+    font-size:14px;
+    color:#D9CFF0;
+    font-weight:400;
+  }
+  .wrap{
+    max-width:1280px;
+    margin:0 auto;
+    padding:0 40px 60px;
+  }
+  .filter-bar{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    margin-top:-22px;
+    padding:18px 22px;
+    display:flex;
+    gap:18px;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    box-shadow:0 12px 30px -18px rgba(46,26,84,0.35);
+    position:relative;
+    z-index:5;
+  }
+  .filter-group{
+    position:relative;
+  }
+  .filter-label{
+    font-family:'Kanit','Segoe UI',sans-serif;
+    font-size:12px;
+    font-weight:600;
+    color:var(--purple-700);
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    margin-bottom:6px;
+    display:block;
+  }
+  .filter-btn{
+    font-family:'Sarabun','Segoe UI',sans-serif;
+    font-size:14px;
+    background:var(--purple-100);
+    border:1px solid var(--border);
+    color:var(--ink);
+    padding:10px 16px;
+    border-radius:9px;
+    cursor:pointer;
+    min-width:220px;
+    text-align:left;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    transition:.15s;
+  }
+  .filter-btn:hover{ background:#E4DBFA; }
+  .filter-btn .chevron{ color:var(--purple-700); font-size:11px; }
+  .filter-panel{
+    display:none;
+    position:absolute;
+    top:calc(100% + 6px);
+    left:0;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:10px;
+    box-shadow:0 16px 32px -10px rgba(46,26,84,0.28);
+    padding:10px;
+    min-width:240px;
+    max-height:260px;
+    overflow-y:auto;
+    z-index:20;
+  }
+  .filter-panel.open{ display:block; }
+  .filter-panel label{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:7px 8px;
+    font-size:13.5px;
+    border-radius:6px;
+    cursor:pointer;
+  }
+  .filter-panel label:hover{ background:var(--purple-100); }
+  .filter-panel input{ accent-color:var(--purple-700); width:15px; height:15px; }
+  .filter-panel .divider{ height:1px; background:var(--border); margin:6px 2px; }
+  .reset-btn{
+    font-family:'Sarabun','Segoe UI',sans-serif;
+    font-size:13.5px;
+    color:var(--purple-700);
+    background:none;
+    border:1px solid var(--purple-500);
+    padding:10px 16px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:600;
+  }
+  .reset-btn:hover{ background:var(--purple-100); }
+
+  .section-title{
+    font-family:'Kanit','Segoe UI',sans-serif;
+    font-size:17px;
+    font-weight:600;
+    color:var(--purple-800);
+    margin:38px 0 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .section-title .bar{
+    width:5px; height:20px; border-radius:3px;
+    background:linear-gradient(180deg,var(--gold),var(--purple-700));
+  }
+
+  .kpi-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+  }
+  .kpi-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  .kpi-card .icon-tag{
+    font-family:'Kanit','Segoe UI',sans-serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.5px;
+    color:var(--muted);
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .kpi-card .value{
+    font-family:'Kanit','Segoe UI',sans-serif;
+    font-size:34px;
+    font-weight:700;
+    color:var(--purple-800);
+    line-height:1.1;
+  }
+  .kpi-card .value.green{ color:var(--green); }
+  .kpi-card .value.blue{ color:var(--blue); }
+  .kpi-card .unit{ font-size:14px; font-weight:500; color:var(--muted); margin-left:4px; }
+  .kpi-card .desc{ font-size:13px; color:var(--muted); margin-top:6px; }
+  .kpi-card .progress-track{
+    margin-top:14px;
+    height:8px;
+    border-radius:6px;
+    background:#EFEAF9;
+    overflow:hidden;
+  }
+  .kpi-card .progress-fill{
+    height:100%;
+    border-radius:6px;
+    background:linear-gradient(90deg,var(--gold),var(--purple-700));
+    transition:width .5s ease;
+  }
+  .kpi-card .progress-fill.riskfill{
+    background:linear-gradient(90deg,var(--blue),var(--green));
+  }
+  .kpi-card .target-tag{
+    position:absolute;
+    top:18px; right:20px;
+    font-size:11px;
+    background:var(--purple-100);
+    color:var(--purple-700);
+    padding:3px 9px;
+    border-radius:20px;
+    font-weight:600;
+  }
+
+  .chart-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:24px 26px 18px;
+    margin-top:18px;
+  }
+  .chart-card .chart-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .chart-card .chart-title{
+    font-family:'Kanit','Segoe UI',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    color:var(--ink);
+  }
+  .legend-chip{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12.5px; color:var(--muted); margin-left:14px;
+  }
+  .legend-dot{ width:10px; height:10px; border-radius:3px; display:inline-block; }
+  .bar-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:9px 0;
+  }
+  .bar-row .prov-label{
+    width:110px;
+    flex-shrink:0;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    text-align:right;
+  }
+  .bar-row .bar-track{
+    flex:1;
+    display:flex;
+    align-items:center;
+    height:26px;
+    gap:3px;
+  }
+  .bar-seg{
+    height:100%;
+    border-radius:5px;
+    display:flex;
+    align-items:center;
+    padding-left:8px;
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    font-family:'Kanit','Segoe UI',sans-serif;
+    white-space:nowrap;
+    transition:width .4s ease;
+    min-width:0;
+  }
+  .bar-seg.zero{ background:#EEE9F8 !important; color:transparent; min-width:2px; flex:0 0 2px; padding:0; }
+  .empty-note{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    padding:40px 0;
+    display:none;
+  }
+  .pie-wrap{
+    display:flex;
+    gap:32px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .pie-svg-box{ flex-shrink:0; }
+  .pie-legend{
+    flex:1;
+    min-width:220px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .pie-legend-item{
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+    font-size:12.5px;
+    color:var(--ink);
+    line-height:1.5;
+  }
+  .pie-legend-dot{
+    width:11px; height:11px; border-radius:3px;
+    flex-shrink:0; margin-top:3px;
+  }
+  .pie-legend-pct{
+    font-family:'Kanit','Segoe UI',sans-serif;
+    font-weight:700;
+    color:var(--purple-800);
+    margin-right:4px;
+  }
+  .pie-total-label{
+    font-family:'Kanit','Segoe UI',sans-serif;
+    font-size:12px;
+    font-weight:700;
+    fill:var(--purple-800);
+  }
+  @media (max-width:700px){
+    .pie-wrap{ flex-direction:column; }
+  }
+  .footnote{
+    margin-top:34px;
+    background:#FBF7EE;
+    border:1px solid #F0E3C4;
+    border-left:4px solid var(--gold);
+    border-radius:10px;
+    padding:14px 18px;
+    font-size:12.5px;
+    color:#7A6224;
+    line-height:1.7;
+  }
+  .footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    margin-top:26px;
+  }
+  @media (max-width:900px){
+    .kpi-row{ grid-template-columns:1fr; }
+    .header, .wrap{ padding-left:18px; padding-right:18px; }
+    .bar-row .prov-label{ width:78px; font-size:11.5px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">การไฟฟ้าส่วนภูมิภาค เขต 2 (ภาคตะวันออกเฉียงเหนือ) จังหวัดอุบลราชธานี</div>
+  <h1>รายงานติดตามสถานะงาน กิจกรรม Big Patrol กฟฉ.2 ประจำปี 2569</h1>
+  <div class="subtitle">ติดตามสถานะการตรวจสอบวงจร (Feeder) และการแก้ไขจุดเสี่ยง — ครอบคลุม 8 จังหวัด 91 วงจร</div>
+</div>
+
+<div class="wrap">
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">จังหวัด</span>
+      <button class="filter-btn" id="btn-province" onclick="togglePanel('panel-province')">
+        <span id="label-province">ทั้งหมด (8)</span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="filter-panel" id="panel-province"></div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">สถานะงาน</span>
+      <button class="filter-btn" id="btn-status" onclick="togglePanel('panel-status')">
+        <span id="label-status">ทั้งหมด (5)</span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="filter-panel" id="panel-status"></div>
+    </div>
+    <button class="reset-btn" onclick="resetFilters()">ล้างตัวกรอง</button>
+  </div>
+
+  <div class="section-title"><span class="bar"></span>ภาพรวมการเปิดใบงาน Patrol ตรวจสอบวงจร</div>
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="icon-tag">เป้าหมายวงจรทั้งหมด</div>
+      <div class="value" id="kpi-total-feeder">87</div>
+      <div class="desc">จำนวนวงจร (Feeder) เป้าหมายทั้งหมดที่ต้องดำเนินการ</div>
+    </div>
+    <div class="kpi-card">
+      <div class="icon-tag">เปิดใบงาน Patrol แล้ว</div>
+      <div class="value green" id="kpi-opened">38</div>
+      <div class="desc" id="kpi-opened-desc">จากทั้งหมด 91 วงจร</div>
+    </div>
+    <div class="kpi-card">
+      <span class="target-tag">เป้าหมาย 100%</span>
+      <div class="icon-tag">% ความสำเร็จในการตรวจสอบ</div>
+      <div class="value blue"><span id="kpi-pct-open">43.68</span><span class="unit">%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="kpi-pct-open-bar" style="width:43.68%"></div></div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-head">
+      <div class="chart-title">จำนวนวงจรแยกตามจังหวัด — สถานะการเปิดใบงาน Patrol</div>
+      <div>
+        <span class="legend-chip"><span class="legend-dot" style="background:#1E9E6B"></span>ดำเนินการแล้ว</span>
+        <span class="legend-chip"><span class="legend-dot" style="background:#D64545"></span>ยังไม่ได้ดำเนินการ</span>
+      </div>
+    </div>
+    <div id="chart1"></div>
+    <div class="empty-note" id="empty1">ไม่พบข้อมูลตามเงื่อนไขตัวกรองที่เลือก</div>
+  </div>
+
+  <div class="section-title"><span class="bar"></span>ภาพรวมการตรวจพบและแก้ไขจุดเสี่ยง</div>
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="icon-tag">จุดเสี่ยงที่ตรวจพบทั้งหมด</div>
+      <div class="value" id="kpi-risk-found">282<span class="unit">จุด</span></div>
+      <div class="desc">รวมจุดเสี่ยงที่ตรวจพบจากวงจรที่เปิดใบงานแล้ว</div>
+    </div>
+    <div class="kpi-card">
+      <div class="icon-tag">จุดเสี่ยงที่บำรุงรักษาแล้ว</div>
+      <div class="value green" id="kpi-risk-fixed">69<span class="unit">จุด</span></div>
+      <div class="desc">จำนวนจุดเสี่ยงที่ดำเนินการแก้ไขแล้วเสร็จ</div>
+    </div>
+    <div class="kpi-card">
+      <span class="target-tag">เป้าหมาย 100%</span>
+      <div class="icon-tag">% ความสำเร็จในการแก้ไขจุดเสี่ยง</div>
+      <div class="value blue"><span id="kpi-pct-risk">24.47</span><span class="unit">%</span></div>
+      <div class="progress-track"><div class="progress-fill riskfill" id="kpi-pct-risk-bar" style="width:24.47%"></div></div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-head">
+      <div class="chart-title">จุดเสี่ยงแยกตามจังหวัด — ตรวจพบ vs บำรุงรักษาแล้ว</div>
+      <div>
+        <span class="legend-chip"><span class="legend-dot" style="background:#2F80C4"></span>ตรวจพบ (จุด)</span>
+        <span class="legend-chip"><span class="legend-dot" style="background:#1E9E6B"></span>บำรุงรักษาแล้ว (จุด)</span>
+      </div>
+    </div>
+    <div id="chart2"></div>
+    <div class="empty-note" id="empty2">ไม่พบข้อมูลตามเงื่อนไขตัวกรองที่เลือก</div>
+  </div>
+
+  <div class="section-title"><span class="bar"></span>สัดส่วนอุปกรณ์และสาเหตุการชำรุดที่ตรวจพบ</div>
+
+  <div class="chart-card">
+    <div class="chart-head">
+      <div class="chart-title">กราฟที่ 3 — สัดส่วนอุปกรณ์ที่ตรวจพบชำรุด (ตามหมวดอุปกรณ์)</div>
+    </div>
+    <div class="pie-wrap" id="pie3-wrap">
+      <div class="pie-svg-box" id="pie3-svg"></div>
+      <div class="pie-legend" id="pie3-legend"></div>
+    </div>
+    <div class="empty-note" id="empty3">ไม่พบข้อมูลตามเงื่อนไขตัวกรองที่เลือก</div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-head">
+      <div class="chart-title">กราฟที่ 4 — สัดส่วนสาเหตุการชำรุดที่ตรวจพบ (รายละเอียดจุดชำรุด)</div>
+    </div>
+    <div class="pie-wrap" id="pie4-wrap">
+      <div class="pie-svg-box" id="pie4-svg"></div>
+      <div class="pie-legend" id="pie4-legend"></div>
+    </div>
+    <div class="empty-note" id="empty4">ไม่พบข้อมูลตามเงื่อนไขตัวกรองที่เลือก</div>
+  </div>
+
+  <div class="footnote">
+    <b>หมายเหตุการคำนวณ:</b> % ความสำเร็จในการตรวจสอบ คำนวณจาก (จำนวนวงจรที่เปิดใบงาน Patrol แล้ว × 100) ÷ (เป้าหมายจำนวนวงจรทั้งหมด 91 วงจร)<br>
+    กราฟที่ 3 และ 4 นับจากจำนวน "จุดที่พบ" ในชีต 2 (ข้อมูลใบงาน Patrol) หมวด "อุปกรณ์" และ "สิ่งที่ตรวจพบ" ตามลำดับ ไม่รวมแถวที่ไม่มีข้อมูลอุปกรณ์<br>
+    ค่าทั้งหมดคำนวณจากข้อมูลในไฟล์ต้นฉบับ และจะเปลี่ยนแปลงตามตัวกรองจังหวัด/สถานะงานที่เลือกด้านบน (ทุกกราฟเชื่อมโยงกับตัวกรองชุดเดียวกัน)
+  </div>
+  <div class="footer">ข้อมูล ณ วันที่ประมวลผล — แหล่งข้อมูล: ชีต1 ไฟล์ Big Patrol กฟฉ.2 ประจำปี 2569</div>
+
+</div>
+
+<script>
+const RAW_DATA = [{"province": "ศรีสะเกษ", "opdeviceid": "RLA03VB-01", "office": "ราชีไศล,มหาชนะชัย", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ศรีสะเกษ", "opdeviceid": "SJA05VB-01", "office": "ศก", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 0, "risk_fixed": 0, "is_open": 1}, {"province": "ศรีสะเกษ", "opdeviceid": "KUK07VB-01", "office": "ขบ", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ศรีสะเกษ", "opdeviceid": "RLA09VB-01", "office": "รศ", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ศรีสะเกษ", "opdeviceid": "SJA10VB-01", "office": "ศก", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 0, "risk_fixed": 0, "is_open": 1}, {"province": "ศรีสะเกษ", "opdeviceid": "KTR04VB-01", "office": "กทล", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ศรีสะเกษ", "opdeviceid": "KUK04VB-01", "office": "ขบ/ขห", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ศรีสะเกษ", "opdeviceid": "KUK01VB-01", "office": "ขบ", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ศรีสะเกษ", "opdeviceid": "RLA04VB-01", "office": "รศ", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ศรีสะเกษ", "opdeviceid": "SJA02VB-01", "office": "ศก", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "กาฬสินธุ์", "opdeviceid": "KLB06VB-01", "office": "กฟจ.กส", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 14, "risk_fixed": 0, "is_open": 1}, {"province": "กาฬสินธุ์", "opdeviceid": "KLB04VB-01", "office": "กส", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 33, "risk_fixed": 0, "is_open": 1}, {"province": "กาฬสินธุ์", "opdeviceid": "KLA03VB-01", "office": "กส", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 6, "risk_fixed": 0, "is_open": 1}, {"province": "กาฬสินธุ์", "opdeviceid": "KLA11VB-01", "office": "กส", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 3, "risk_fixed": 0, "is_open": 1}, {"province": "กาฬสินธุ์", "opdeviceid": "SDA02VB-01", "office": "สดจ", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 3, "risk_fixed": 3, "is_open": 1}, {"province": "กาฬสินธุ์", "opdeviceid": "KLA06VB-01", "office": "กส", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 21, "risk_fixed": 0, "is_open": 1}, {"province": "กาฬสินธุ์", "opdeviceid": "SDA09VB-01", "office": "สดจ", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 6, "risk_fixed": 6, "is_open": 1}, {"province": "กาฬสินธุ์", "opdeviceid": "KLA05VB-01", "office": "กส", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 39, "risk_fixed": 9, "is_open": 1}, {"province": "กาฬสินธุ์", "opdeviceid": "KLA07R-01", "office": "กส.ยางตลาด", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "กาฬสินธุ์", "opdeviceid": "SDA10R-02", "office": "สดจ", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "มหาสารคาม", "opdeviceid": "PYP04VB-01", "office": "พยัฆภูมิพิสัย", "status_open": "ดำเนินการแล้ว", "status_detail": "จ่ายงานแล้ว", "risk_found": 0, "risk_fixed": 0, "is_open": 1}, {"province": "มหาสารคาม", "opdeviceid": "MKA05VB-01", "office": "มค.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 4, "risk_fixed": 0, "is_open": 1}, {"province": "มหาสารคาม", "opdeviceid": "MKB03VB-01", "office": "มค.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 6, "risk_fixed": 6, "is_open": 1}, {"province": "มหาสารคาม", "opdeviceid": "PYP02VB-01", "office": "พยัฆภูมิพิสัย", "status_open": "ดำเนินการแล้ว", "status_detail": "จ่ายงานแล้ว", "risk_found": 0, "risk_fixed": 0, "is_open": 1}, {"province": "มหาสารคาม", "opdeviceid": "MKA04VB-01", "office": "มค.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 3, "risk_fixed": 0, "is_open": 1}, {"province": "มหาสารคาม", "opdeviceid": "PYP06VB-01", "office": "พยัฆภูมิพิสัย", "status_open": "ดำเนินการแล้ว", "status_detail": "จ่ายงานแล้ว", "risk_found": 0, "risk_fixed": 0, "is_open": 1}, {"province": "มหาสารคาม", "opdeviceid": "MKA08VB-01", "office": "มค.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 2, "risk_fixed": 0, "is_open": 1}, {"province": "มหาสารคาม", "opdeviceid": "MKB05VB-01", "office": "มค.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 21, "risk_fixed": 3, "is_open": 1}, {"province": "มหาสารคาม", "opdeviceid": "MKB06VB-01", "office": "มค.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 10, "risk_fixed": 10, "is_open": 1}, {"province": "มหาสารคาม", "opdeviceid": "MKB02VB-01", "office": "มค.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 2, "risk_fixed": 0, "is_open": 1}, {"province": "มุกดาหาร", "opdeviceid": "LNT05R-01", "office": "มดห./ลนท.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 25, "risk_fixed": 0, "is_open": 1}, {"province": "มุกดาหาร", "opdeviceid": "MDB04VB-01", "office": "มดห.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 17, "risk_fixed": 0, "is_open": 1}, {"province": "มุกดาหาร", "opdeviceid": "MDB06VB-01", "office": "มดห.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 20, "risk_fixed": 0, "is_open": 1}, {"province": "มุกดาหาร", "opdeviceid": "MDB04R-01", "office": "มดห.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 17, "risk_fixed": 0, "is_open": 1}, {"province": "มุกดาหาร", "opdeviceid": "MDA05R-01", "office": "มดห.ลนท.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 16, "risk_fixed": 0, "is_open": 1}, {"province": "มุกดาหาร", "opdeviceid": "MDA03R-01", "office": "มดห.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 46, "risk_fixed": 0, "is_open": 1}, {"province": "มุกดาหาร", "opdeviceid": "MDB07VB-01", "office": "มดห.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 13, "risk_fixed": 0, "is_open": 1}, {"province": "มุกดาหาร", "opdeviceid": "MDA06R-01", "office": "กฟส.กฉ., คำชะอี", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "มุกดาหาร", "opdeviceid": "MDB05VB-01", "office": "มดห.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 2, "risk_fixed": 0, "is_open": 1}, {"province": "มุกดาหาร", "opdeviceid": "MDB03R-01", "office": "มดห.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 5, "risk_fixed": 0, "is_open": 1}, {"province": "มุกดาหาร", "opdeviceid": "MDA02R-02", "office": "มดห.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 28, "risk_fixed": 0, "is_open": 1}, {"province": "อำนาจเจริญ", "opdeviceid": "ANA04VB-01", "office": "อจ.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 8, "risk_fixed": 8, "is_open": 1}, {"province": "อำนาจเจริญ", "opdeviceid": "ANA03VB-01", "office": "อจ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 5, "risk_fixed": 3, "is_open": 1}, {"province": "อำนาจเจริญ", "opdeviceid": "ANA02VB-01", "office": "อจ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 3, "risk_fixed": 0, "is_open": 1}, {"province": "อำนาจเจริญ", "opdeviceid": "ANA07VB-01", "office": "อจ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 5, "risk_fixed": 0, "is_open": 1}, {"province": "อำนาจเจริญ", "opdeviceid": "LNT01VB-01", "office": "ลนท.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 4, "risk_fixed": 4, "is_open": 1}, {"province": "อำนาจเจริญ", "opdeviceid": "ANA09VB-01", "office": "อจ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 6, "risk_fixed": 2, "is_open": 1}, {"province": "อำนาจเจริญ", "opdeviceid": "ANA01VB-01", "office": "อจ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 3, "risk_fixed": 0, "is_open": 1}, {"province": "อำนาจเจริญ", "opdeviceid": "ANA05VB-01", "office": "อจ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 12, "risk_fixed": 0, "is_open": 1}, {"province": "อำนาจเจริญ", "opdeviceid": "LNT04VB-01", "office": "ลนท.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 1, "risk_fixed": 1, "is_open": 1}, {"province": "อำนาจเจริญ", "opdeviceid": "ANA06VB-01", "office": "อจ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 6, "risk_fixed": 2, "is_open": 1}, {"province": "อุบลราชธานี", "opdeviceid": "TPP01VB-01", "office": "ตฟ.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "อุบลราชธานี", "opdeviceid": "UBV03VB-01", "office": "อบ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 33, "risk_fixed": 0, "is_open": 1}, {"province": "อุบลราชธานี", "opdeviceid": "TPP04VB-01", "office": "ตฟ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 2, "risk_fixed": 0, "is_open": 1}, {"province": "อุบลราชธานี", "opdeviceid": "LSU06BR-01", "office": "อบ.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "อุบลราชธานี", "opdeviceid": "TPP10VB-01", "office": "ตฟ.", "status_open": "ดำเนินการแล้ว", "status_detail": "งานใหม่", "risk_found": 0, "risk_fixed": 0, "is_open": 1}, {"province": "อุบลราชธานี", "opdeviceid": "KNI02VB-01", "office": "ขน.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "อุบลราชธานี", "opdeviceid": "KNI09VB-01", "office": "ขน. มสส.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 21, "risk_fixed": 21, "is_open": 1}, {"province": "อุบลราชธานี", "opdeviceid": "DEA06VB-01", "office": "ดอ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 16, "risk_fixed": 0, "is_open": 1}, {"province": "อุบลราชธานี", "opdeviceid": "KEA05VB-01", "office": "ขร.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "อุบลราชธานี", "opdeviceid": "NEA01VB-01", "office": "นยน.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "อุบลราชธานี", "opdeviceid": "DEA03VB-01", "office": "ดอ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 5, "risk_fixed": 3, "is_open": 1}, {"province": "อุบลราชธานี", "opdeviceid": "DEA07VB-01", "office": "ดอ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 15, "risk_fixed": 0, "is_open": 1}, {"province": "อุบลราชธานี", "opdeviceid": "UBA04VB-01", "office": "อบ.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "อุบลราชธานี", "opdeviceid": "ZTA08VB-01", "office": "บท.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "อุบลราชธานี", "opdeviceid": "LSU02BR-01", "office": "อบ.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "อุบลราชธานี", "opdeviceid": "LSU05BR-01", "office": "อบ.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "อุบลราชธานี", "opdeviceid": "UBB08VB-01", "office": "วรช.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 39, "risk_fixed": 0, "is_open": 1}, {"province": "ยโสธร", "opdeviceid": "RLA03R-01", "office": "มหาชนะชัย", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 22, "risk_fixed": 22, "is_open": 1}, {"province": "ยโสธร", "opdeviceid": "YTA04VB-01", "office": "ยส.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ยโสธร", "opdeviceid": "YTA03R-01", "office": "ยส.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ยโสธร", "opdeviceid": "YTA07R-02", "office": "ยส.,พนมไพร", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ยโสธร", "opdeviceid": "SEL09VB-01", "office": "ยส.,สล.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ยโสธร", "opdeviceid": "YTA01VB-01", "office": "ยส.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ยโสธร", "opdeviceid": "RLA08VB-01", "office": "รศ.,มหาชนะชัย", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 2, "risk_fixed": 2, "is_open": 1}, {"province": "ยโสธร", "opdeviceid": "YTA05VB-01", "office": "ยส.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 3, "risk_fixed": 3, "is_open": 1}, {"province": "ยโสธร", "opdeviceid": "YTA06VB-01", "office": "ยส.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ยโสธร", "opdeviceid": "YTA08VB-01", "office": "ยส.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ร้อยเอ็ด", "opdeviceid": "SEL06VB-01", "office": "สล.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ร้อยเอ็ด", "opdeviceid": "SEL09VB-01", "office": "สล.", "status_open": "ยังไม่ได้ดำเนินการ", "status_detail": "-", "risk_found": 0, "risk_fixed": 0, "is_open": 0}, {"province": "ร้อยเอ็ด", "opdeviceid": "REB01VB-01", "office": "รอ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 1, "risk_fixed": 1, "is_open": 1}, {"province": "ร้อยเอ็ด", "opdeviceid": "PTN01VB-01", "office": "พทง.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 2, "risk_fixed": 2, "is_open": 1}, {"province": "ร้อยเอ็ด", "opdeviceid": "PTN09VB-01", "office": "พทง.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 1, "risk_fixed": 1, "is_open": 1}, {"province": "ร้อยเอ็ด", "opdeviceid": "PTN07VB-01", "office": "พทง.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 2, "risk_fixed": 2, "is_open": 1}, {"province": "ร้อยเอ็ด", "opdeviceid": "KSW09VB-01", "office": "กษ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 13, "risk_fixed": 0, "is_open": 1}, {"province": "ร้อยเอ็ด", "opdeviceid": "REB02VB-01", "office": "รอ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 9, "risk_fixed": 4, "is_open": 1}, {"province": "ร้อยเอ็ด", "opdeviceid": "PTN05VB-01", "office": "พทง.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 7, "risk_fixed": 7, "is_open": 1}, {"province": "ร้อยเอ็ด", "opdeviceid": "REA04VB-01", "office": "รอ.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 26, "risk_fixed": 21, "is_open": 1}, {"province": "มุกดาหาร", "opdeviceid": "MDA07VB-01", "office": "มดห.", "status_open": "ดำเนินการแล้ว", "status_detail": "กำลังนำเข้า", "risk_found": 27, "risk_fixed": 0, "is_open": 1}, {"province": "มหาสารคาม", "opdeviceid": "MKA07R-01", "office": "มค.", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 5, "risk_fixed": 5, "is_open": 1}, {"province": "ศรีสะเกษ", "opdeviceid": "RLA02R-01", "office": "รศ", "status_open": "ดำเนินการแล้ว", "status_detail": "ดำเนินงานเสร็จสิ้น", "risk_found": 30, "risk_fixed": 29, "is_open": 1}];
+
+let EQUIP_DATA;
+try {
+EQUIP_DATA = [{"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-JO-2 : Hotline & Bail Clamp (จุดต่อในระบบจำหน่าย)", "finding": "D-JO-23 : Hotline & Bail Clamp ติดตั้งไม่ถูกต้องตามมาตรฐาน เช่น Hotline&Bail Clamp ผิดขนาด"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-JO-2 : Hotline & Bail Clamp (จุดต่อในระบบจำหน่าย)", "finding": "D-JO-23 : Hotline & Bail Clamp ติดตั้งไม่ถูกต้องตามมาตรฐาน เช่น Hotline&Bail Clamp ผิดขนาด"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-32 : ลูกถ้วยแยกสายเปลี่ยนสี/แตกลายงา"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-CO-1 : สายหุ้มฉนวน (สายไฟระบบจำหน่าย)", "finding": "D-CO-13 : ระยะหย่อนยานของสายหุ้มฉนวน (ไม่ได้มาตรฐาน/ไม่ปลอดภัย)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-JO-2 : Hotline & Bail Clamp (จุดต่อในระบบจำหน่าย)", "finding": "D-JO-23 : Hotline & Bail Clamp ติดตั้งไม่ถูกต้องตามมาตรฐาน เช่น Hotline&Bail Clamp ผิดขนาด"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-CO-1 : สายหุ้มฉนวน (สายไฟระบบจำหน่าย)", "finding": "D-CO-11 : สายหุ้มฉนวนชำรุด"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-AG-1 : อุปกรณ์ป้องกันที่ติดตั้งกับส่วนที่ มีไฟ (อุปกรณ์ป้องกันสัตว์และอื่นๆ)", "finding": "D-AG-13 : Insulation Cover (Dropout fuse) ชำรุด/ไม่ติดตั้ง"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-JO-2 : Hotline & Bail Clamp (จุดต่อในระบบจำหน่าย)", "finding": "D-JO-23 : Hotline & Bail Clamp ติดตั้งไม่ถูกต้องตามมาตรฐาน เช่น Hotline&Bail Clamp ผิดขนาด"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-CO-1 : สายหุ้มฉนวน (สายไฟระบบจำหน่าย)", "finding": "D-CO-11 : สายหุ้มฉนวนชำรุด"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-32 : ลูกถ้วยแยกสายเปลี่ยนสี/แตกลายงา"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-SW-4 : Dropout Fuse Cutout (อุปกรณ์ป้องกันและตัดตอน)", "finding": "D-SW-43 : ติดตั้งไม่ได้มาตรฐาน เช่น เอียง,ปลด-สับ ยาก,ไม่ปลอดภัย"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-04 : ลูกถ้วยกระเบื้องมีเสียง/แสง"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-SW-4 : Dropout Fuse Cutout (อุปกรณ์ป้องกันและตัดตอน)", "finding": "D-SW-41 : Insulator แตก/บิ่น/มีรอยอาร์ค/ผิวสกปรก/เปลี่ยนสี"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-32 : ลูกถ้วยแยกสายเปลี่ยนสี/แตกลายงา"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-31 : ลูกถ้วยแยกสายแตกหัก/มีรอยอาร์ค/ไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-31 : ลูกถ้วยแยกสายแตกหัก/มีรอยอาร์ค/ไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-UN-0 : สิ่งแปลกปลอม (สิ่งแปลกปลอมในระบบจำหน่าย)", "finding": "D-UN-01 : สิ่งแปลกปลอมที่อยู่บน/ใกล้ส่วนที่มีแรงดันไฟฟ้า"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-UN-0 : สิ่งแปลกปลอม (สิ่งแปลกปลอมในระบบจำหน่าย)", "finding": "D-UN-01 : สิ่งแปลกปลอมที่อยู่บน/ใกล้ส่วนที่มีแรงดันไฟฟ้า"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-31 : ลูกถ้วยแยกสายแตกหัก/มีรอยอาร์ค/ไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-31 : ลูกถ้วยแยกสายแตกหัก/มีรอยอาร์ค/ไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-SW-4 : Dropout Fuse Cutout (อุปกรณ์ป้องกันและตัดตอน)", "finding": "D-SW-45 : อุปกรณ์ประกอบชำรุด เช่น ห่วงสำหรับปลด-สับ,กระบอกฟิวส์ไหม้/แตกหัก/ใช้วัสดุอื่นติดตั้งแทน(ลวด),Bracket หลุด"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-SW-4 : Dropout Fuse Cutout (อุปกรณ์ป้องกันและตัดตอน)", "finding": "D-SW-45 : อุปกรณ์ประกอบชำรุด เช่น ห่วงสำหรับปลด-สับ,กระบอกฟิวส์ไหม้/แตกหัก/ใช้วัสดุอื่นติดตั้งแทน(ลวด),Bracket หลุด"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-CA-0 : Fixed Capacitor (คาปาซิเตอร์)", "finding": "D-CA-01 : สายลีดหลุด/ขาด/ชำรุด"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-31 : ลูกถ้วยแยกสายแตกหัก/มีรอยอาร์ค/ไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-SW-4 : Dropout Fuse Cutout (อุปกรณ์ป้องกันและตัดตอน)", "finding": "D-SW-45 : อุปกรณ์ประกอบชำรุด เช่น ห่วงสำหรับปลด-สับ,กระบอกฟิวส์ไหม้/แตกหัก/ใช้วัสดุอื่นติดตั้งแทน(ลวด),Bracket หลุด"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-SW-4 : Dropout Fuse Cutout (อุปกรณ์ป้องกันและตัดตอน)", "finding": "D-SW-45 : อุปกรณ์ประกอบชำรุด เช่น ห่วงสำหรับปลด-สับ,กระบอกฟิวส์ไหม้/แตกหัก/ใช้วัสดุอื่นติดตั้งแทน(ลวด),Bracket หลุด"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-SW-4 : Dropout Fuse Cutout (อุปกรณ์ป้องกันและตัดตอน)", "finding": "D-SW-45 : อุปกรณ์ประกอบชำรุด เช่น ห่วงสำหรับปลด-สับ,กระบอกฟิวส์ไหม้/แตกหัก/ใช้วัสดุอื่นติดตั้งแทน(ลวด),Bracket หลุด"}, {"province": "ยโสธร", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-JO-1 : PG Clamp (จุดต่อในระบบจำหน่าย)", "finding": "D-JO-14 : PG Clamp ไม่พันเทป/เทปหลุด/พันเทปไม่ได้มาตรฐาน (สายหุ้มฉนวน)"}, {"province": "ยโสธร", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-CO-2 : อุปกรณ์จับยึดสาย (สายไฟระบบจำหน่าย)", "finding": "D-CO-21 : Tie wire/Cover tie wire คลายตัว/หลุด/ขาด/ชำรุด/ไม่มี"}, {"province": "ยโสธร", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-AG-1 : อุปกรณ์ป้องกันที่ติดตั้งกับส่วนที่ มีไฟ (อุปกรณ์ป้องกันสัตว์และอื่นๆ)", "finding": "D-AG-13 : Insulation Cover (Dropout fuse) ชำรุด/ไม่ติดตั้ง"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-AG-1 : อุปกรณ์ป้องกันที่ติดตั้งกับส่วนที่ มีไฟ (อุปกรณ์ป้องกันสัตว์และอื่นๆ)", "finding": "D-AG-13 : Insulation Cover (Dropout fuse) ชำรุด/ไม่ติดตั้ง"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-31 : ลูกถ้วยแยกสายแตกหัก/มีรอยอาร์ค/ไหม้"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-31 : ลูกถ้วยแยกสายแตกหัก/มีรอยอาร์ค/ไหม้"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-31 : ลูกถ้วยแยกสายแตกหัก/มีรอยอาร์ค/ไหม้"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-AG-1 : อุปกรณ์ป้องกันที่ติดตั้งกับส่วนที่ มีไฟ (อุปกรณ์ป้องกันสัตว์และอื่นๆ)", "finding": "D-AG-13 : Insulation Cover (Dropout fuse) ชำรุด/ไม่ติดตั้ง"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-13 : เถาวัลย์ขึ้นเสา/สายยึดโยง ต่ำกว่าระดับระบบจำหน่ายแรงต่ำ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-AG-1 : อุปกรณ์ป้องกันที่ติดตั้งกับส่วนที่ มีไฟ (อุปกรณ์ป้องกันสัตว์และอื่นๆ)", "finding": "D-AG-13 : Insulation Cover (Dropout fuse) ชำรุด/ไม่ติดตั้ง"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-14 : วัชพืชแห้งบนสายไฟ/เสาไฟ/สายยึดโยง (ตัดโคนแต่ไม่เอาลง)"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-14 : วัชพืชแห้งบนสายไฟ/เสาไฟ/สายยึดโยง (ตัดโคนแต่ไม่เอาลง)"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-31 : ลูกถ้วยแยกสายแตกหัก/มีรอยอาร์ค/ไหม้"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-32 : ลูกถ้วยแยกสายเปลี่ยนสี/แตกลายงา"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-AR-0 : กับดักเสิร์จชนิดกระเบื้อง (กับดักเสิร์จ)", "finding": "D-AR-01 : สายลีดเข้าหัวของกับดักเสิร์จหลุด"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-GR-0 : สาย OHGW (ระบบต่อลงดิน)", "finding": "D-GR-01 : สาย OHGW ขาด"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-PO-2 : คอนและอุปกรณ์ประกอบ (เสา)", "finding": "D-PO-22 : คอน คอร. แตก/บิ่น"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-GR-0 : สาย OHGW (ระบบต่อลงดิน)", "finding": "D-GR-01 : สาย OHGW ขาด"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-GR-0 : สาย OHGW (ระบบต่อลงดิน)", "finding": "D-GR-01 : สาย OHGW ขาด"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-GR-0 : สาย OHGW (ระบบต่อลงดิน)", "finding": "D-GR-01 : สาย OHGW ขาด"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-AR-0 : กับดักเสิร์จชนิดกระเบื้อง (กับดักเสิร์จ)", "finding": "D-AR-01 : สายลีดเข้าหัวของกับดักเสิร์จหลุด"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-JO-1 : PG Clamp (จุดต่อในระบบจำหน่าย)", "finding": "D-JO-11 : PG Clamp เปลี่ยนสี/มีรอยอาร์ค/สึกกร่อน/มองเห็นแสง"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-SW-4 : Dropout Fuse Cutout (อุปกรณ์ป้องกันและตัดตอน)", "finding": "D-SW-41 : Insulator แตก/บิ่น/มีรอยอาร์ค/ผิวสกปรก/เปลี่ยนสี"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-PO-2 : คอนและอุปกรณ์ประกอบ (เสา)", "finding": "D-PO-24 : คอนเหล็กผุกร่อน/สนิม"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-PO-2 : คอนและอุปกรณ์ประกอบ (เสา)", "finding": "D-PO-24 : คอนเหล็กผุกร่อน/สนิม"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-PO-0 : เสาคอนกรีต (เสา)", "finding": "D-PO-05 : เสาคอนกรีตเอียงมากกว่า 5 องศา"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-04 : ต้นไม้โตเร็วมีความเสี่ยงต้องเฝ้าระวังพิเศษ เช่น กอไผ่,ปาล์ม"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-SW-4 : Dropout Fuse Cutout (อุปกรณ์ป้องกันและตัดตอน)", "finding": "D-SW-43 : ติดตั้งไม่ได้มาตรฐาน เช่น เอียง,ปลด-สับ ยาก,ไม่ปลอดภัย"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-AG-1 : อุปกรณ์ป้องกันที่ติดตั้งกับส่วนที่ มีไฟ (อุปกรณ์ป้องกันสัตว์และอื่นๆ)", "finding": "D-AG-13 : Insulation Cover (Dropout fuse) ชำรุด/ไม่ติดตั้ง"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-AG-1 : อุปกรณ์ป้องกันที่ติดตั้งกับส่วนที่ มีไฟ (อุปกรณ์ป้องกันสัตว์และอื่นๆ)", "finding": "D-AG-13 : Insulation Cover (Dropout fuse) ชำรุด/ไม่ติดตั้ง"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-AG-1 : อุปกรณ์ป้องกันที่ติดตั้งกับส่วนที่ มีไฟ (อุปกรณ์ป้องกันสัตว์และอื่นๆ)", "finding": "D-AG-13 : Insulation Cover (Dropout fuse) ชำรุด/ไม่ติดตั้ง"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-AG-1 : อุปกรณ์ป้องกันที่ติดตั้งกับส่วนที่ มีไฟ (อุปกรณ์ป้องกันสัตว์และอื่นๆ)", "finding": "D-AG-13 : Insulation Cover (Dropout fuse) ชำรุด/ไม่ติดตั้ง"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-AG-1 : อุปกรณ์ป้องกันที่ติดตั้งกับส่วนที่ มีไฟ (อุปกรณ์ป้องกันสัตว์และอื่นๆ)", "finding": "D-AG-13 : Insulation Cover (Dropout fuse) ชำรุด/ไม่ติดตั้ง"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-04 : ต้นไม้โตเร็วมีความเสี่ยงต้องเฝ้าระวังพิเศษ เช่น กอไผ่,ปาล์ม"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-AG-1 : อุปกรณ์ป้องกันที่ติดตั้งกับส่วนที่ มีไฟ (อุปกรณ์ป้องกันสัตว์และอื่นๆ)", "finding": "D-AG-13 : Insulation Cover (Dropout fuse) ชำรุด/ไม่ติดตั้ง"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-AR-0 : กับดักเสิร์จชนิดกระเบื้อง (กับดักเสิร์จ)", "finding": "D-AR-03 : ครีบ (Housing) แตก/บิ่น/มีรอยอาร์ค/ผิวสกปรก/เปลี่ยนสี"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-AR-1 : กับดักเสิร์จชนิดคอมโพสิท (กับดักเสิร์จ)", "finding": "D-AR-11 : สายลีดเข้าหัวของกับดักเสิร์จหลุด"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-AR-0 : กับดักเสิร์จชนิดกระเบื้อง (กับดักเสิร์จ)", "finding": "D-AR-01 : สายลีดเข้าหัวของกับดักเสิร์จหลุด"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-13 : เถาวัลย์ขึ้นเสา/สายยึดโยง ต่ำกว่าระดับระบบจำหน่ายแรงต่ำ"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-13 : เถาวัลย์ขึ้นเสา/สายยึดโยง ต่ำกว่าระดับระบบจำหน่ายแรงต่ำ"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-14 : วัชพืชแห้งบนสายไฟ/เสาไฟ/สายยึดโยง (ตัดโคนแต่ไม่เอาลง)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-14 : วัชพืชแห้งบนสายไฟ/เสาไฟ/สายยึดโยง (ตัดโคนแต่ไม่เอาลง)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-14 : วัชพืชแห้งบนสายไฟ/เสาไฟ/สายยึดโยง (ตัดโคนแต่ไม่เอาลง)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-CO-1 : สายหุ้มฉนวน (สายไฟระบบจำหน่าย)", "finding": "D-CO-12 : สายหุ้มฉนวนหลุดจากลูกถ้วย/ลูกถ้วยแยกสาย"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อำนาจเจริญ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อำนาจเจริญ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อำนาจเจริญ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อำนาจเจริญ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อำนาจเจริญ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อำนาจเจริญ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อำนาจเจริญ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อำนาจเจริญ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "ยโสธร", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ยโสธร", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ยโสธร", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "ยโสธร", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-02 : ลูกถ้วยกระเบื้องแตกลาย/เปลี่ยนสี/รอยวาบไฟตามผิว"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-31 : ลูกถ้วยแยกสายแตกหัก/มีรอยอาร์ค/ไหม้"}, {"province": "อำนาจเจริญ", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "ยโสธร", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-CO-1 : สายหุ้มฉนวน (สายไฟระบบจำหน่าย)", "finding": "D-CO-11 : สายหุ้มฉนวนชำรุด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-13 : เถาวัลย์ขึ้นเสา/สายยึดโยง ต่ำกว่าระดับระบบจำหน่ายแรงต่ำ"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มหาสารคาม", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-13 : เถาวัลย์ขึ้นเสา/สายยึดโยง ต่ำกว่าระดับระบบจำหน่ายแรงต่ำ"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-13 : เถาวัลย์ขึ้นเสา/สายยึดโยง ต่ำกว่าระดับระบบจำหน่ายแรงต่ำ"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-13 : เถาวัลย์ขึ้นเสา/สายยึดโยง ต่ำกว่าระดับระบบจำหน่ายแรงต่ำ"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-13 : เถาวัลย์ขึ้นเสา/สายยึดโยง ต่ำกว่าระดับระบบจำหน่ายแรงต่ำ"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-13 : เถาวัลย์ขึ้นเสา/สายยึดโยง ต่ำกว่าระดับระบบจำหน่ายแรงต่ำ"}, {"province": "กาฬสินธุ์", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-SW-4 : Dropout Fuse Cutout (อุปกรณ์ป้องกันและตัดตอน)", "finding": "D-SW-42 : Terminal Clamp มีรอยอาร์ค/มองเห็นแสง"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-13 : เถาวัลย์ขึ้นเสา/สายยึดโยง ต่ำกว่าระดับระบบจำหน่ายแรงต่ำ"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-31 : ลูกถ้วยแยกสายแตกหัก/มีรอยอาร์ค/ไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-31 : ลูกถ้วยแยกสายแตกหัก/มีรอยอาร์ค/ไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-AR-0 : กับดักเสิร์จชนิดกระเบื้อง (กับดักเสิร์จ)", "finding": "D-AR-01 : สายลีดเข้าหัวของกับดักเสิร์จหลุด"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-IN-0 : ชนิดกระเบื้อง (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-01 : ลูกถ้วยกระเบื้องบิ่น/แตกร้าว/ชำรุด"}, {"province": "อุบลราชธานี", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-04 : ต้นไม้โตเร็วมีความเสี่ยงต้องเฝ้าระวังพิเศษ เช่น กอไผ่,ปาล์ม"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-04 : ต้นไม้โตเร็วมีความเสี่ยงต้องเฝ้าระวังพิเศษ เช่น กอไผ่,ปาล์ม"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-14 : วัชพืชแห้งบนสายไฟ/เสาไฟ/สายยึดโยง (ตัดโคนแต่ไม่เอาลง)"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-13 : เถาวัลย์ขึ้นเสา/สายยึดโยง ต่ำกว่าระดับระบบจำหน่ายแรงต่ำ"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-13 : เถาวัลย์ขึ้นเสา/สายยึดโยง ต่ำกว่าระดับระบบจำหน่ายแรงต่ำ"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-13 : เถาวัลย์ขึ้นเสา/สายยึดโยง ต่ำกว่าระดับระบบจำหน่ายแรงต่ำ"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-12 : เถาวัลย์ขึ้นเสา/สายยึดโยง สูงกว่าระดับระบบจำหน่ายแรงต่ำ หรือ Snake guard"}, {"province": "ร้อยเอ็ด", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-14 : วัชพืชแห้งบนสายไฟ/เสาไฟ/สายยึดโยง (ตัดโคนแต่ไม่เอาลง)"}, {"province": "ร้อยเอ็ด", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-14 : วัชพืชแห้งบนสายไฟ/เสาไฟ/สายยึดโยง (ตัดโคนแต่ไม่เอาลง)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-04 : ต้นไม้โตเร็วมีความเสี่ยงต้องเฝ้าระวังพิเศษ เช่น กอไผ่,ปาล์ม"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-31 : ลูกถ้วยแยกสายแตกหัก/มีรอยอาร์ค/ไหม้"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-04 : ต้นไม้โตเร็วมีความเสี่ยงต้องเฝ้าระวังพิเศษ เช่น กอไผ่,ปาล์ม"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-02 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่ามาตรฐาน (1.50 เมตร)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-03 : ต้นไม้มีความเสี่ยงโน้มเอียง/หัก/ล้ม/คร่อม ทับสายไฟ"}, {"province": "มุกดาหาร", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "มหาสารคาม", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "กำลังนำเข้า", "equipment": "D-IN-3 : ลูกถ้วยแยกสาย (Spacer) (ลูกถ้วยระบบจำหน่าย)", "finding": "D-IN-33 : ห่วงรัด/clip lock ของลูกถ้วยแยกสายชำรุด/ขาด"}, {"province": "มหาสารคาม", "status": "กำลังนำเข้า", "equipment": "D-TV-0 : ต้นไม้ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-01 : ต้นไม้ใกล้แนวสายระบบจำหน่ายน้อยกว่า 0.5 เมตร /ปลายยอดไหม้"}, {"province": "มหาสารคาม", "status": "กำลังนำเข้า", "equipment": "D-AG-1 : อุปกรณ์ป้องกันที่ติดตั้งกับส่วนที่ มีไฟ (อุปกรณ์ป้องกันสัตว์และอื่นๆ)", "finding": "D-AG-13 : Insulation Cover (Dropout fuse) ชำรุด/ไม่ติดตั้ง"}, {"province": "มหาสารคาม", "status": "กำลังนำเข้า", "equipment": "D-TV-1 : เถาวัลย์ (ต้นไม้และเถาวัลย์ใกล้แนวระบบจำหน่าย)", "finding": "D-TV-11 : เถาวัลย์ขึ้นเสา/สายยึดโยงหรือแตะ/ใกล้ สายไฟฟ้าระบบจำหน่ายแรงสูง (22/33 kV)"}, {"province": "ร้อยเอ็ด", "status": "จ่ายงานแล้ว", "equipment": "-", "finding": "-"}, {"province": "มุกดาหาร", "status": "จ่ายงานแล้ว", "equipment": "-", "finding": "-"}, {"province": "มุกดาหาร", "status": "จ่ายงานแล้ว", "equipment": "-", "finding": "-"}, {"province": "มุกดาหาร", "status": "จ่ายงานแล้ว", "equipment": "-", "finding": "-"}, {"province": "อำนาจเจริญ", "status": "รอดำเนินการ", "equipment": "-", "finding": "-"}, {"province": "ร้อยเอ็ด", "status": "รอดำเนินการ", "equipment": "-", "finding": "-"}, {"province": "ยโสธร", "status": "รอดำเนินการ", "equipment": "-", "finding": "-"}, {"province": "ศรีสะเกษ", "status": "รอดำเนินการ", "equipment": "-", "finding": "-"}, {"province": "ศรีสะเกษ", "status": "รอดำเนินการ", "equipment": "-", "finding": "-"}, {"province": "อุบลราชธานี", "status": "รอดำเนินการ", "equipment": "-", "finding": "-"}, {"province": "ศรีสะเกษ", "status": "ดำเนินงานเสร็จสิ้น", "equipment": "-", "finding": "-"}];
+} catch(e) { EQUIP_DATA = []; }
+const PIE_PALETTE = ['#4B2E83','#2F80C4','#1E9E6B','#E8A33D','#D64545','#7C5CBF','#3EC1D3','#F2994A','#9B59B6','#27AE60','#556270','#C0392B','#16A085','#8E44AD','#2980B9','#E67E22','#95A5A6','#D35400'];
+const PROVINCES = [...new Set(RAW_DATA.map(r=>r.province))];
+const STATUS_DETAILS = [...new Set(RAW_DATA.map(r=>r.status_detail))];
+const STATUS_LABEL = {'-':'ยังไม่ได้ดำเนินการ','รอดำเนินการ':'รอดำเนินการ','ดำเนินงานเสร็จสิ้น':'ดำเนินงานเสร็จสิ้น','กำลังนำเข้า':'กำลังนำเข้า','จ่ายงานแล้ว':'จ่ายงานแล้ว','งานใหม่':'งานใหม่'};
+
+let selectedProvinces = new Set(PROVINCES);
+let selectedStatuses = new Set(STATUS_DETAILS);
+
+function buildPanel(id, items, selectedSet, labelFn, onchange){
+  const panel = document.getElementById(id);
+  panel.innerHTML = '';
+  const allLabel = document.createElement('label');
+  allLabel.innerHTML = '<input type="checkbox" id="'+id+'-all" checked> <b>เลือกทั้งหมด</b>';
+  panel.appendChild(allLabel);
+  const div = document.createElement('div'); div.className='divider'; panel.appendChild(div);
+  items.forEach(it=>{
+    const lab = document.createElement('label');
+    const cb = document.createElement('input');
+    cb.type='checkbox'; cb.checked = selectedSet.has(it); cb.value = it;
+    cb.addEventListener('change', ()=>{
+      if(cb.checked) selectedSet.add(it); else selectedSet.delete(it);
+      document.getElementById(id+'-all').checked = selectedSet.size === items.length;
+      onchange();
+    });
+    lab.appendChild(cb);
+    lab.appendChild(document.createTextNode(labelFn(it)));
+    panel.appendChild(lab);
+  });
+  document.getElementById(id+'-all').addEventListener('change', (e)=>{
+    if(e.target.checked){ items.forEach(it=>selectedSet.add(it)); }
+    else { selectedSet.clear(); }
+    panel.querySelectorAll('input[type=checkbox]:not(#'+id+'-all)').forEach(cb=>{ cb.checked = selectedSet.has(cb.value); });
+    onchange();
+  });
+}
+
+function togglePanel(id){
+  const panel = document.getElementById(id);
+  document.querySelectorAll('.filter-panel').forEach(p=>{ if(p.id!==id) p.classList.remove('open'); });
+  panel.classList.toggle('open');
+}
+document.addEventListener('click', (e)=>{
+  if(!e.target.closest('.filter-group')){
+    document.querySelectorAll('.filter-panel').forEach(p=>p.classList.remove('open'));
+  }
+});
+
+function resetFilters(){
+  selectedProvinces = new Set(PROVINCES);
+  selectedStatuses = new Set(STATUS_DETAILS);
+  buildPanel('panel-province', PROVINCES, selectedProvinces, p=>p, update);
+  buildPanel('panel-status', STATUS_DETAILS, selectedStatuses, s=>STATUS_LABEL[s]||s, update);
+  update();
+}
+
+function fmt(n){ return n.toLocaleString('en-US'); }
+function pct(a,b){ return b>0 ? (a*100/b) : 0; }
+
+// Pure-HTML/CSS horizontal grouped bar chart (no external libraries needed)
+function renderGroupedBars(containerId, rows, seriesDefs){
+  // rows: [{label, values:[v1,v2,...]}]
+  // seriesDefs: [{color, name}]
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  const maxVal = Math.max(1, ...rows.flatMap(r=>r.values));
+  rows.forEach(r=>{
+    const rowEl = document.createElement('div');
+    rowEl.className = 'bar-row';
+    const label = document.createElement('div');
+    label.className = 'prov-label';
+    label.textContent = r.label;
+    rowEl.appendChild(label);
+    const track = document.createElement('div');
+    track.className = 'bar-track';
+    r.values.forEach((v, i)=>{
+      const seg = document.createElement('div');
+      const widthPct = (v / maxVal) * 100;
+      seg.className = 'bar-seg' + (v===0 ? ' zero' : '');
+      seg.style.width = Math.max(widthPct, v===0?0:3) + '%';
+      seg.style.background = seriesDefs[i].color;
+      seg.textContent = v>0 ? v : '';
+      seg.title = seriesDefs[i].name + ': ' + v;
+      track.appendChild(seg);
+    });
+    rowEl.appendChild(track);
+    container.appendChild(rowEl);
+  });
+}
+
+// Pure-SVG pie chart (no external libraries)
+function renderPieChart(svgContainerId, legendContainerId, emptyId, countsMap){
+  const svgBox = document.getElementById(svgContainerId);
+  const legendBox = document.getElementById(legendContainerId);
+  svgBox.innerHTML = '';
+  legendBox.innerHTML = '';
+
+  const entries = Object.entries(countsMap).sort((a,b)=>b[1]-a[1]);
+  const total = entries.reduce((s,[,v])=>s+v,0);
+  document.getElementById(emptyId).style.display = total===0 ? 'block' : 'none';
+  if(total===0) return;
+
+  const size = 240, cx = size/2, cy = size/2, r = size/2 - 6;
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns,'svg');
+  svg.setAttribute('width', size);
+  svg.setAttribute('height', size);
+  svg.setAttribute('viewBox', '0 0 '+size+' '+size);
+
+  let startAngle = -90;
+  entries.forEach(([label, value], i)=>{
+    const pct = value/total;
+    const angle = pct*360;
+    const endAngle = startAngle + angle;
+    const color = PIE_PALETTE[i % PIE_PALETTE.length];
+
+    if(entries.length===1){
+      const circle = document.createElementNS(ns,'circle');
+      circle.setAttribute('cx',cx); circle.setAttribute('cy',cy); circle.setAttribute('r',r);
+      circle.setAttribute('fill', color);
+      svg.appendChild(circle);
+    } else {
+      const largeArc = angle > 180 ? 1 : 0;
+      const x1 = cx + r*Math.cos(startAngle*Math.PI/180);
+      const y1 = cy + r*Math.sin(startAngle*Math.PI/180);
+      const x2 = cx + r*Math.cos(endAngle*Math.PI/180);
+      const y2 = cy + r*Math.sin(endAngle*Math.PI/180);
+      const path = document.createElementNS(ns,'path');
+      const d = `M ${cx} ${cy} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r} ${r} 0 ${largeArc} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z`;
+      path.setAttribute('d', d);
+      path.setAttribute('fill', color);
+      path.setAttribute('stroke', '#fff');
+      path.setAttribute('stroke-width', '1.5');
+      const title = document.createElementNS(ns,'title');
+      title.textContent = label + ': ' + value + ' (' + (pct*100).toFixed(2) + '%)';
+      path.appendChild(title);
+      svg.appendChild(path);
+    }
+    startAngle = endAngle;
+  });
+
+  const totalText = document.createElementNS(ns,'text');
+  totalText.setAttribute('x', cx); totalText.setAttribute('y', cy-4);
+  totalText.setAttribute('text-anchor','middle');
+  totalText.setAttribute('class','pie-total-label');
+  totalText.setAttribute('font-size','12');
+  totalText.textContent = 'Total';
+  svg.appendChild(totalText);
+  const totalVal = document.createElementNS(ns,'text');
+  totalVal.setAttribute('x', cx); totalVal.setAttribute('y', cy+14);
+  totalVal.setAttribute('text-anchor','middle');
+  totalVal.setAttribute('font-family',"'Kanit','Segoe UI',sans-serif");
+  totalVal.setAttribute('font-weight','700');
+  totalVal.setAttribute('font-size','16');
+  totalVal.setAttribute('fill','#241D34');
+  totalVal.textContent = total.toLocaleString('en-US');
+  svg.appendChild(totalVal);
+
+  svgBox.appendChild(svg);
+
+  entries.forEach(([label, value], i)=>{
+    const pct = (value/total*100).toFixed(2);
+    const color = PIE_PALETTE[i % PIE_PALETTE.length];
+    const item = document.createElement('div');
+    item.className = 'pie-legend-item';
+    const dot = document.createElement('span');
+    dot.className = 'pie-legend-dot';
+    dot.style.background = color;
+    const text = document.createElement('span');
+    text.innerHTML = '<span class="pie-legend-pct">'+pct+'%</span>('+value+') '+label;
+    item.appendChild(dot);
+    item.appendChild(text);
+    legendBox.appendChild(item);
+  });
+}
+
+function update(){
+  document.getElementById('label-province').textContent = selectedProvinces.size===PROVINCES.length ? 'ทั้งหมด ('+PROVINCES.length+')' : selectedProvinces.size+' จังหวัด';
+  document.getElementById('label-status').textContent = selectedStatuses.size===STATUS_DETAILS.length ? 'ทั้งหมด ('+STATUS_DETAILS.length+')' : selectedStatuses.size+' สถานะ';
+
+  const filtered = RAW_DATA.filter(r=> selectedProvinces.has(r.province) && selectedStatuses.has(r.status_detail));
+
+  const totalFeeder = filtered.length;
+  const opened = filtered.filter(r=>r.is_open===1).length;
+  const pctOpen = pct(opened, totalFeeder);
+  const riskFound = filtered.reduce((s,r)=>s+r.risk_found,0);
+  const riskFixed = filtered.reduce((s,r)=>s+r.risk_fixed,0);
+  const pctRisk = pct(riskFixed, riskFound);
+
+  document.getElementById('kpi-total-feeder').textContent = fmt(totalFeeder);
+  document.getElementById('kpi-opened').textContent = fmt(opened);
+  document.getElementById('kpi-opened-desc').textContent = 'จากทั้งหมด '+fmt(totalFeeder)+' วงจร';
+  document.getElementById('kpi-pct-open').textContent = pctOpen.toFixed(2);
+  document.getElementById('kpi-pct-open-bar').style.width = Math.min(pctOpen,100)+'%';
+  document.getElementById('kpi-risk-found').innerHTML = fmt(riskFound)+'<span class="unit">จุด</span>';
+  document.getElementById('kpi-risk-fixed').innerHTML = fmt(riskFixed)+'<span class="unit">จุด</span>';
+  document.getElementById('kpi-pct-risk').textContent = pctRisk.toFixed(2);
+  document.getElementById('kpi-pct-risk-bar').style.width = Math.min(pctRisk,100)+'%';
+
+  const provOrder = PROVINCES.filter(p=>selectedProvinces.has(p));
+
+  document.getElementById('empty1').style.display = provOrder.length===0 ? 'block':'none';
+  document.getElementById('empty2').style.display = provOrder.length===0 ? 'block':'none';
+  document.getElementById('chart1').style.display = provOrder.length===0 ? 'none':'block';
+  document.getElementById('chart2').style.display = provOrder.length===0 ? 'none':'block';
+
+  if(provOrder.length===0) return;
+
+  const rows1 = provOrder.map(p=>{
+    const rows = filtered.filter(r=>r.province===p);
+    return { label:p, values:[rows.filter(r=>r.is_open===1).length, rows.filter(r=>r.is_open===0).length] };
+  });
+  renderGroupedBars('chart1', rows1, [
+    {color:'#1E9E6B', name:'ดำเนินการแล้ว'},
+    {color:'#D64545', name:'ยังไม่ได้ดำเนินการ'}
+  ]);
+
+  const rows2 = provOrder.map(p=>{
+    const rows = filtered.filter(r=>r.province===p);
+    return { label:p, values:[rows.reduce((s,r)=>s+r.risk_found,0), rows.reduce((s,r)=>s+r.risk_fixed,0)] };
+  });
+  renderGroupedBars('chart2', rows2, [
+    {color:'#2F80C4', name:'ตรวจพบ (จุด)'},
+    {color:'#1E9E6B', name:'บำรุงรักษาแล้ว (จุด)'}
+  ]);
+
+  // Pie chart 3 & 4: filtered by same province + status filters
+  const equipFiltered = EQUIP_DATA.filter(r=> selectedProvinces.has(r.province) && selectedStatuses.has(r.status));
+
+  const equipCounts = {};
+  equipFiltered.forEach(r=>{ equipCounts[r.equipment] = (equipCounts[r.equipment]||0) + 1; });
+  renderPieChart('pie3-svg','pie3-legend','empty3', equipCounts);
+
+  const findingCounts = {};
+  equipFiltered.forEach(r=>{ findingCounts[r.finding] = (findingCounts[r.finding]||0) + 1; });
+  renderPieChart('pie4-svg','pie4-legend','empty4', findingCounts);
+}
+
+buildPanel('panel-province', PROVINCES, selectedProvinces, p=>p, update);
+buildPanel('panel-status', STATUS_DETAILS, selectedStatuses, s=>STATUS_LABEL[s]||s, update);
+update();
+</script>
+</body>
+</html>
